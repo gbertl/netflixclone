@@ -22,12 +22,12 @@ function App() {
           })
         );
       } else {
-        dispatch(logout);
+        dispatch(logout());
       }
     });
 
     return unsubscribe;
-  }, []);
+  }, [dispatch]); //runs everytime it dispatches an action
 
   return (
     <div className="app">
