@@ -1,11 +1,28 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Banner from "../Banner";
 import "./HomeScreen.css";
 import Nav from "../Nav";
 import Row from "../Row";
 import requests from "../Request";
+import {useSelector} from "react-redux";
+import {selectUser} from "../features/userSlice";
+import db from "../firebase";
+import {useHistory} from "react-router";
 
 function HomeScreen() {
+  const user = useSelector(selectUser);
+  const history = useHistory();
+
+  useEffect(() => {
+    db.collection("customers")
+      .doc(user?.uid)
+      .collection("subscriptions")
+      .get()
+      .then((querySnapShot) => {
+        if (querySnapShot.empty) history.replace("/profile");
+      });
+  }, [user, history]);
+
   return (
     <div className="homeScreen">
       <Nav />
